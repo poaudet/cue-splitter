@@ -2,40 +2,36 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Install base packages and audio tools
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+        ca-certificates \
         bash \
         flac \
         cuetools \
         shntool \
-        vorbis-tools \
+        wavpack \
+        ttaenc \
+        tta \
+        ffmpeg \
         coreutils \
         findutils \
         git \
         build-essential \
         wget \
-        ffmpeg \
         && rm -rf /var/lib/apt/lists/*
 
-# Install mac (Monkey's Audio) from source
+# Install mac (Monkey's Audio decoder) from source
 RUN mkdir -p /opt && \
     cd /opt && \
     git clone https://github.com/fernandotcl/monkeys-audio.git && \
     cd monkeys-audio && \
     make && \
     cp mac /usr/local/bin/ && \
-    chmod +x /usr/local/bin/mac
+    chmod +x /usr/local/bin/mac && \
+    cd / && rm -rf /opt/monkeys-audio
 
-# Install WavPack (WV) and TTA
-RUN apt-get update && \
-    apt-get install -y wavpack tta && \
-    rm -rf /var/lib/apt/lists/*
-
-# Ensure shnsplit is installed
-RUN apt-get update && \
-    apt-get install -y shnsplit && \
-    rm -rf /var/lib/apt/lists/*
-
+# Copy entrypoint and tagging script
 COPY cuetag.sh /usr/local/bin/cuetag.sh
 COPY entrypoint.sh /entrypoint.sh
 
