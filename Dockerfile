@@ -11,8 +11,6 @@ RUN apt-get update && \
         cuetools \
         shntool \
         wavpack \
-        ttaenc \
-        tta \
         ffmpeg \
         coreutils \
         findutils \
@@ -21,7 +19,7 @@ RUN apt-get update && \
         wget \
         && rm -rf /var/lib/apt/lists/*
 
-# Install mac (Monkey's Audio decoder) from source
+# Install Monkey's Audio (mac) from source
 RUN mkdir -p /opt && \
     cd /opt && \
     git clone https://github.com/fernandotcl/monkeys-audio.git && \
@@ -31,7 +29,18 @@ RUN mkdir -p /opt && \
     chmod +x /usr/local/bin/mac && \
     cd / && rm -rf /opt/monkeys-audio
 
-# Copy entrypoint and tagging script
+# Install TTA (True Audio) from source
+RUN mkdir -p /opt && \
+    cd /opt && \
+    wget https://github.com/tta-dev/tta/archive/refs/tags/v0.5.4.tar.gz && \
+    tar -xzvf v0.5.4.tar.gz && \
+    cd tta-0.5.4 && \
+    make && \
+    cp ttaenc /usr/local/bin/ && \
+    chmod +x /usr/local/bin/ttaenc && \
+    cd / && rm -rf /opt/tta-0.5.4
+
+# Copy cuetag.sh and entrypoint.sh
 COPY cuetag.sh /usr/local/bin/cuetag.sh
 COPY entrypoint.sh /entrypoint.sh
 
