@@ -20,7 +20,7 @@ RUN apt-get update && \
 # Install mac (Monkey's Audio) from source
 RUN mkdir -p /opt && \
     cd /opt && \
-    git clone https://github.com/danielpoe/monkeys-audio.git && \
+    git clone https://github.com/fernandotcl/monkeys-audio.git && \
     cd monkeys-audio && \
     make && \
     cp mac /usr/local/bin/ && \
