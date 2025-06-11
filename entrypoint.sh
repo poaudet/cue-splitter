@@ -5,7 +5,7 @@ MOUNT_PATH="/music"
 
 find "$MOUNT_PATH" -type d | while read -r dir; do
     cue=$(find "$dir" -maxdepth 1 -iname '*.cue' | head -n 1)
-    audio=$(find "$dir" -maxdepth 1 \( -iname '*.flac' -o -iname '*.ape' -o -iname '*.wav' \) | grep -v split-track | head -n 1)
+    audio=$(find "$dir" -maxdepth 1 \( -iname '*.flac' -o -iname '*.ape' -o -iname '*.wav' -o -iname '*.wv' -o -iname '*.tta' \) | grep -v '\.cue' | head -n 1)
 
     if [[ -n "$cue" && -n "$audio" ]]; then
         echo ">>> Processing: $dir"
